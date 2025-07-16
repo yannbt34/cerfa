@@ -1,46 +1,769 @@
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Formulaire de contact</title>
-  <style>
-    body {
-      font-family: sans-serif;
-      padding: 40px;
-      background: #f2f2f2;
-    }
-    form {
-      background: white;
-      padding: 20px;
-      max-width: 500px;
-      margin: auto;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-    input, textarea {
-      display: block;
-      width: 100%;
-      margin-bottom: 10px;
-      padding: 10px;
-    }
-    button {
-      background: #3498db;
-      color: white;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demande de classement d'un meublé de tourisme - CERFA 11819*03</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .header h1 {
+            font-size: 1.8em;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header p {
+            font-size: 0.9em;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        .form-container {
+            padding: 40px;
+        }
+
+        .section {
+            margin-bottom: 35px;
+            padding: 25px;
+            background: rgba(248, 249, 250, 0.8);
+            border-radius: 15px;
+            border-left: 4px solid #3498db;
+            transition: all 0.3s ease;
+        }
+
+        .section:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-title {
+            font-size: 1.3em;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title::before {
+            content: '●';
+            color: #3498db;
+            font-size: 1.5em;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .form-row > div {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #34495e;
+            font-size: 0.9em;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="number"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e6ed;
+            border-radius: 10px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="tel"]:focus,
+        input[type="number"]:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+            transform: translateY(-1px);
+        }
+
+        .checkbox-group {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .checkbox-item:hover {
+            background: rgba(52, 152, 219, 0.1);
+        }
+
+        input[type="checkbox"],
+        input[type="radio"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .star-rating {
+            display: flex;
+            gap: 5px;
+            margin-top: 10px;
+        }
+
+        .star {
+            font-size: 24px;
+            color: #ddd;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .star:hover,
+        .star.active {
+            color: #f39c12;
+        }
+
+        .submit-section {
+            background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+            margin: 30px -40px -40px -40px;
+            padding: 30px 40px;
+            text-align: center;
+        }
+
+        .submit-btn {
+            background: white;
+            color: #27ae60;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.1em;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .legal-info {
+            margin-top: 20px;
+            font-size: 0.8em;
+            color: rgba(255, 255, 255, 0.8);
+            text-align: left;
+            line-height: 1.4;
+        }
+
+        @media (max-width: 600px) {
+            .form-row {
+                flex-direction: column;
+            }
+            
+            .form-row > div {
+                min-width: 100%;
+            }
+            
+            .checkbox-group {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
 </head>
 <body>
-  <h1 style="text-align: center;">Contactez-nous</h1>
-  <form action="https://formspree.io/f/your-form-id" method="POST">
-    <input type="text" name="name" placeholder="Votre nom" required>
-    <input type="email" name="email" placeholder="Votre email" required>
-    <textarea name="message" placeholder="Votre message" rows="5" required></textarea>
-    <button type="submit">Envoyer</button>
-  </form>
-</body>
-</html>
+    <div class="container">
+        <div class="header">
+            <h1>DEMANDE DE CLASSEMENT D'UN MEUBLÉ DE TOURISME</h1>
+            <p>Articles L.324-1 et D.324-1 et suivants du code du tourisme</p>
+            <p>Arrêté du 2 août 2010 modifié - CERFA N°11819*03</p>
+        </div>
+
+        <div class="form-container">
+            <form id="cerfaForm">
+                <!-- Identification du logement meublé -->
+                <div class="section">
+                    <h2 class="section-title">IDENTIFICATION DU LOGEMENT MEUBLÉ</h2>
+                    
+                    <div class="form-group">
+                        <label for="denomination">Dénomination commerciale du meublé (le cas échéant) :</label>
+                        <input type="text" id="denomination" name="denomination">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="adresse">Adresse du logement meublé (préciser s'il y a lieu le bâtiment, l'étage, le numéro) :</label>
+                        <textarea id="adresse" name="adresse" rows="3" required></textarea>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="codePostal">Code postal :</label>
+                            <input type="text" id="codePostal" name="codePostal" pattern="[0-9]{5}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="commune">Commune :</label>
+                            <input type="text" id="commune" name="commune" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="telLogement">Téléphone du logement meublé (s'il existe) :</label>
+                        <input type="tel" id="telLogement" name="telLogement">
+                    </div>
+                </div>
+
+                <!-- Identification du demandeur -->
+                <div class="section">
+                    <h2 class="section-title">IDENTIFICATION DU DEMANDEUR</h2>
+                    
+                    <div class="form-group">
+                        <label>Civilité :</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="radio" id="madame" name="civilite" value="madame" required>
+                                <label for="madame">Madame</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="radio" id="mademoiselle" name="civilite" value="mademoiselle">
+                                <label for="mademoiselle">Mademoiselle</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="radio" id="monsieur" name="civilite" value="monsieur">
+                                <label for="monsieur">Monsieur</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="nom">Nom :</label>
+                            <input type="text" id="nom" name="nom" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="prenom">Prénom :</label>
+                            <input type="text" id="prenom" name="prenom" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="statut">Statut (loueur, mandataire, autre...) :</label>
+                        <input type="text" id="statut" name="statut" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="adresseDemandeur">Adresse :</label>
+                        <textarea id="adresseDemandeur" name="adresseDemandeur" rows="2" required></textarea>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="codePostalDemandeur">Code postal :</label>
+                            <input type="text" id="codePostalDemandeur" name="codePostalDemandeur" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="communeDemandeur">Commune :</label>
+                            <input type="text" id="communeDemandeur" name="communeDemandeur" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="pays">Pays :</label>
+                            <input type="text" id="pays" name="pays" value="France" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="tel1">Téléphone 1 :</label>
+                            <input type="tel" id="tel1" name="tel1" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="tel2">Téléphone 2 :</label>
+                            <input type="tel" id="tel2" name="tel2">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Courriel :</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                </div>
+
+                <!-- Nature de la demande -->
+                <div class="section">
+                    <h2 class="section-title">NATURE DE LA DEMANDE</h2>
+                    
+                    <div class="form-group">
+                        <label>Classement actuel :</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="radio" id="nonClasse" name="classementActuel" value="non_classe">
+                                <label for="nonClasse">Non classé</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="radio" id="classeActuel" name="classementActuel" value="classe">
+                                <label for="classeActuel">Classé</label>
+                            </div>
+                        </div>
+                        <div id="etoilesActuelles" style="display: none;">
+                            <label>Nombre d'étoiles actuelles :</label>
+                            <div class="star-rating" id="currentStars">
+                                <span class="star" data-value="1">★</span>
+                                <span class="star" data-value="2">★</span>
+                                <span class="star" data-value="3">★</span>
+                                <span class="star" data-value="4">★</span>
+                                <span class="star" data-value="5">★</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Classement demandé (nombre d'étoiles) :</label>
+                        <div class="star-rating" id="requestedStars">
+                            <span class="star" data-value="1">★</span>
+                            <span class="star" data-value="2">★</span>
+                            <span class="star" data-value="3">★</span>
+                            <span class="star" data-value="4">★</span>
+                            <span class="star" data-value="5">★</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="capacite">Capacité demandée (en nombre de personnes) :</label>
+                        <input type="number" id="capacite" name="capacite" min="1" max="20" required>
+                    </div>
+                </div>
+
+                <!-- Description du logement meublé -->
+                <div class="section">
+                    <h2 class="section-title">DESCRIPTION DU LOGEMENT MEUBLÉ</h2>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="superficie">Superficie totale du meublé (m²) :</label>
+                            <input type="number" id="superficie" name="superficie" min="1" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="nbPieces">Nombre de pièces d'habitation :</label>
+                            <input type="number" id="nbPieces" name="nbPieces" min="1" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Construction :</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="radio" id="neuve" name="construction" value="neuve" required>
+                                <label for="neuve">Neuve</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="radio" id="recente" name="construction" value="recente">
+                                <label for="recente">Récente</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="radio" id="ancienne" name="construction" value="ancienne">
+                                <label for="ancienne">Ancienne (plus de 10 ans)</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Type de logement meublé :</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="radio" id="appartement" name="typeLogement" value="appartement" required>
+                                <label for="appartement">Appartement</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="radio" id="studio" name="typeLogement" value="studio">
+                                <label for="studio">Studio</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="radio" id="villa" name="typeLogement" value="villa">
+                                <label for="villa">Villa</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="radio" id="autreType" name="typeLogement" value="autre">
+                                <label for="autreType">Autre</label>
+                            </div>
+                        </div>
+                        <div id="autreTypeInput" style="display: none; margin-top: 10px;">
+                            <input type="text" id="autreTypeText" name="autreTypeText" placeholder="Précisez...">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Mis en location toute l'année :</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="radio" id="anneeOui" name="locationAnnee" value="oui" required>
+                                <label for="anneeOui">Oui</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="radio" id="anneeNon" name="locationAnnee" value="non">
+                                <label for="anneeNon">Non</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Identification de l'organisme -->
+                <div class="section">
+                    <h2 class="section-title">IDENTIFICATION DE L'ORGANISME</h2>
+                    <p style="margin-bottom: 15px; font-style: italic; color: #666;">Organisme en charge de la visite de classement (organisme visé au 1° ou au 2° de l'article L. 324-1 du code du tourisme)</p>
+                    
+                    <div class="form-group">
+                        <label for="organisme">Nom et coordonnées de l'organisme :</label>
+                        <textarea id="organisme" name="organisme" rows="4" required></textarea>
+                    </div>
+                </div>
+
+                <div class="submit-section">
+                    <button type="submit" class="submit-btn">📄 Générer le CERFA PDF</button>
+                    
+                    <div class="legal-info">
+                        <p><strong>Information légale :</strong> La loi n° 78-17 du 6 janvier 1978 relative à l'informatique, aux fichiers et aux libertés, s'applique aux réponses faites à ce formulaire. Elle garantit un droit d'accès et de rectification pour ces données auprès de la Préfecture du lieu d'implantation de l'établissement et auprès d'Atout France à qui ces données sont fournies par la Préfecture du lieu d'implantation de l'établissement dès lors que la décision de classement est prise, conformément aux dispositions réglementaires.</p>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Gestion des étoiles
+        function setupStarRating(containerId, inputName) {
+            const container = document.getElementById(containerId);
+            const stars = container.querySelectorAll('.star');
+            
+            stars.forEach((star, index) => {
+                star.addEventListener('click', () => {
+                    const value = parseInt(star.getAttribute('data-value'));
+                    
+                    // Mettre à jour l'affichage
+                    stars.forEach((s, i) => {
+                        if (i < value) {
+                            s.classList.add('active');
+                        } else {
+                            s.classList.remove('active');
+                        }
+                    });
+                    
+                    // Créer ou mettre à jour l'input caché
+                    let input = document.querySelector(`input[name="${inputName}"]`);
+                    if (!input) {
+                        input = document.createElement('input');
+                        input.type = 'hidden';
+                        input.name = inputName;
+                        container.appendChild(input);
+                    }
+                    input.value = value;
+                });
+            });
+        }
+
+        // Initialiser les systèmes d'étoiles
+        setupStarRating('currentStars', 'etoilesActuelles');
+        setupStarRating('requestedStars', 'classementDemande');
+
+        // Gestion du classement actuel
+        document.querySelectorAll('input[name="classementActuel"]').forEach(radio => {
+            radio.addEventListener('change', () => {
+                const etoilesDiv = document.getElementById('etoilesActuelles');
+                if (radio.value === 'classe') {
+                    etoilesDiv.style.display = 'block';
+                } else {
+                    etoilesDiv.style.display = 'none';
+                }
+            });
+        });
+
+        // Gestion du type "autre"
+        document.querySelectorAll('input[name="typeLogement"]').forEach(radio => {
+            radio.addEventListener('change', () => {
+                const autreInput = document.getElementById('autreTypeInput');
+                if (radio.value === 'autre') {
+                    autreInput.style.display = 'block';
+                    document.getElementById('autreTypeText').required = true;
+                } else {
+                    autreInput.style.display = 'none';
+                    document.getElementById('autreTypeText').required = false;
+                }
+            });
+        });
+
+        // Gestion de la soumission du formulaire
+        document.getElementById('cerfaForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // Validation des étoiles demandées
+            const starsInput = document.querySelector('input[name="classementDemande"]');
+            if (!starsInput || !starsInput.value) {
+                alert('Veuillez sélectionner le nombre d\'étoiles demandé.');
+                return;
+            }
+            
+            // Générer le PDF du CERFA
+            generateCerfaPDF();
+        });
+
+        // Fonction pour générer le PDF du CERFA
+        function generateCerfaPDF() {
+            const formData = new FormData(document.getElementById('cerfaForm'));
+            
+            // Récupérer les données du formulaire
+            const data = {
+                denomination: formData.get('denomination') || '',
+                adresse: formData.get('adresse') || '',
+                codePostal: formData.get('codePostal') || '',
+                commune: formData.get('commune') || '',
+                telLogement: formData.get('telLogement') || '',
+                civilite: formData.get('civilite') || '',
+                nom: formData.get('nom') || '',
+                prenom: formData.get('prenom') || '',
+                statut: formData.get('statut') || '',
+                adresseDemandeur: formData.get('adresseDemandeur') || '',
+                codePostalDemandeur: formData.get('codePostalDemandeur') || '',
+                communeDemandeur: formData.get('communeDemandeur') || '',
+                pays: formData.get('pays') || '',
+                tel1: formData.get('tel1') || '',
+                tel2: formData.get('tel2') || '',
+                email: formData.get('email') || '',
+                classementActuel: formData.get('classementActuel') || '',
+                etoilesActuelles: formData.get('etoilesActuelles') || '',
+                classementDemande: formData.get('classementDemande') || '',
+                capacite: formData.get('capacite') || '',
+                superficie: formData.get('superficie') || '',
+                nbPieces: formData.get('nbPieces') || '',
+                construction: formData.get('construction') || '',
+                typeLogement: formData.get('typeLogement') || '',
+                autreTypeText: formData.get('autreTypeText') || '',
+                locationAnnee: formData.get('locationAnnee') || '',
+                organisme: formData.get('organisme') || ''
+            };
+
+            // Créer le contenu HTML du CERFA
+            const cerfaHTML = generateCerfaHTML(data);
+            
+            // Créer une nouvelle fenêtre pour l'impression
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(cerfaHTML);
+            printWindow.document.close();
+            
+            // Lancer l'impression après chargement
+            printWindow.onload = function() {
+                printWindow.print();
+            };
+        }
+
+        // Fonction pour générer le HTML du CERFA formaté
+        function generateCerfaHTML(data) {
+            const currentDate = new Date().toLocaleDateString('fr-FR');
+            
+            return `
+            <!DOCTYPE html>
+            <html lang="fr">
+            <head>
+                <meta charset="UTF-8">
+                <title>CERFA 11819*03 - ${data.nom} ${data.prenom}</title>
+                <style>
+                    @media print {
+                        body { margin: 0; }
+                        .no-print { display: none; }
+                    }
+                    body {
+                        font-family: Arial, sans-serif;
+                        font-size: 12px;
+                        line-height: 1.3;
+                        margin: 20px;
+                        color: #000;
+                    }
+                    .header {
+                        text-align: center;
+                        margin-bottom: 30px;
+                        border-bottom: 2px solid #000;
+                        padding-bottom: 10px;
+                    }
+                    .header h1 {
+                        margin: 0;
+                        font-size: 16px;
+                        font-weight: bold;
+                    }
+                    .header p {
+                        margin: 5px 0;
+                        font-size: 11px;
+                    }
+                    .section {
+                        margin-bottom: 25px;
+                        border: 1px solid #000;
+                        padding: 15px;
+                    }
+                    .section-title {
+                        font-weight: bold;
+                        font-size: 14px;
+                        margin-bottom: 15px;
+                        text-decoration: underline;
+                    }
+                    .form-line {
+                        margin-bottom: 8px;
+                        display: flex;
+                        align-items: baseline;
+                    }
+                    .label {
+                        font-weight: normal;
+                        margin-right: 10px;
+                    }
+                    .value {
+                        border-bottom: 1px solid #000;
+                        flex-grow: 1;
+                        min-height: 20px;
+                        padding: 2px 5px;
+                        font-weight: bold;
+                    }
+                    .checkbox-line {
+                        margin-bottom: 8px;
+                    }
+                    .checkbox {
+                        display: inline-block;
+                        width: 15px;
+                        height: 15px;
+                        border: 1px solid #000;
+                        margin-right: 5px;
+                        text-align: center;
+                        line-height: 13px;
+                        font-weight: bold;
+                    }
+                    .checked {
+                        background-color: #000;
+                        color: white;
+                    }
+                    .textarea-value {
+                        border: 1px solid #000;
+                        padding: 5px;
+                        min-height: 40px;
+                        width: 100%;
+                        font-weight: bold;
+                    }
+                    .signature-section {
+                        margin-top: 40px;
+                        display: flex;
+                        justify-content: space-between;
+                    }
+                    .legal-text {
+                        font-size: 10px;
+                        margin-top: 30px;
+                        text-align: justify;
+                        line-height: 1.2;
+                    }
+                    .stars {
+                        display: inline-block;
+                        margin-left: 10px;
+                    }
+                    .star {
+                        display: inline-block;
+                        width: 20px;
+                        height: 20px;
+                        border: 1px solid #000;
+                        margin: 0 2px;
+                        text-align: center;
+                        line-height: 18px;
+                    }
+                    .star.filled {
+                        background-color: #000;
+                        color: white;
+                    }
+                </style>
+            </head>
+            <body>
+                <div class="header">
+                    <h1>DEMANDE DE CLASSEMENT D'UN MEUBLE DE TOURISME</h1>
+                    <p>Articles L.324-1 et D.324-1 et suivants du code du tourisme</p>
+                    <p>Arrêté du 2 août 2010 modifié fixant les normes et la procédure de classement des meublés de tourisme</p>
+                    <p style="text-align: right; margin-top: 10px;">N°11819*03</p>
+                </div>
+
+                <div class="section">
+                    <div class="section-title">IDENTIFICATION DU LOGEMENT MEUBLÉ</div>
+                    
+                    <div class="form-line">
+                        <span class="label">Le cas échéant, dénomination commerciale du meublé :</span>
+                        <span class="value">${data.denomination}</span>
+                    </div>
+
+                    <div class="form-line">
+                        <span class="label">Adresse du logement meublé :</span>
+                    </div>
+                    <div class
